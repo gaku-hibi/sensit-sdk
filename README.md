@@ -94,10 +94,9 @@ u8 payload[10];
 u8 customer_response[8];
 get_temp_humid_light(payload);
 
-SENSIT_API_send_sfx_frame(SFX_RC1,RED,payload,10,customer_response,3,FALSE);
+SENSIT_API_send_sfx_frame(SFX_RC3,RED,payload,10,customer_response,3,FALSE);	
 
 /* Put the device in deep sleep mode */
-//SENSIT_API_sleep(MAX_SLEEP_DURATION);
 SENSIT_API_sleep(300);
 ```
 You can send a sigfox message by "SENSIT_API_send_sfx_frame" defined in /inc/sdk/sensit_api.h file.  
@@ -118,23 +117,22 @@ This sample code gets temparature, humidity and light. (for easy understanding, 
 void get_temp_humid_light(u8* payload)
 {
 	/* activate temp and humid sensor */
-	SENSIT_API_temp_sensor_mode_active();
+	SENSIT_ERR_NONE != SENSIT_API_temp_sensor_mode_active();
 	/* activate light sensor */
-	SENSIT_API_light_sensor_mode_active(LIGHT_SENSOR_SETTING_GAINx1);
+	SENSIT_ERR_NONE != SENSIT_API_light_sensor_mode_active(LIGHT_SENSOR_SETTING_GAINx1);
 
 	SENSIT_API_sleep(20);
 
 	/* get temp and humid */
 	s16 temp = 0;
 	u16 humid = 0;
-	SENSIT_API_temp_sensor_measure(&temp, &humid);
+	SENSIT_ERR_NONE != SENSIT_API_temp_sensor_measure(&temp, &humid);
 
 	union {
 		float v;
 		u8 c[4];
 	} t;
 	t.v = ((float)temp) / 8.0;
-
 	union {
 		u16 v;
 		u8 c[2];
@@ -144,14 +142,13 @@ void get_temp_humid_light(u8* payload)
 	/* get light */
 	u16 light_ch0 = 0;
 	u16 light_ch1 = 0;	
-	SENSIT_API_light_sensor_measure(&light_ch0, &light_ch1);
+	SENSIT_ERR_NONE != SENSIT_API_light_sensor_measure(&light_ch0, &light_ch1);
 
 	union {
 		u16 v;
 		u8 c[2];
 	} l0;
 	l0.v = light_ch0;
-
 	union {
 		u16 v;
 		u8 c[2];
@@ -170,10 +167,9 @@ void get_temp_humid_light(u8* payload)
 	payload[9] = l1.c[1];
 
 	/* sleep temp and humid sensor */
-	SENSIT_API_temp_sensor_mode_sleep();
-
+	SENSIT_ERR_NONE != SENSIT_API_temp_sensor_mode_sleep();
 	/* sleep light sensor */
-	SENSIT_API_light_sensor_mode_sleep();
+	SENSIT_ERR_NONE != SENSIT_API_light_sensor_mode_sleep()
 }
 ```
 To access the API documentation, open the file 'doc/doxygen/index.html' in your browser.  
