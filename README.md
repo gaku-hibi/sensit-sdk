@@ -1,4 +1,4 @@
-# How to use Sen'it SDK -First Step-
+# How to use Sigfox Sen'it SDK
 [Sens'it](https://sensit.io/) is IoT device which have 5 sensors and one button, released by Sigfox.  
 If you want to get it, please contact to [Sigfox Operator](https://www.sigfox.com/en/coverage) on your located. and then you can download Sens'it SDK.  
 [download site](https://build.sigfox.com/sensit-for-developers/#sensit-sdk)
